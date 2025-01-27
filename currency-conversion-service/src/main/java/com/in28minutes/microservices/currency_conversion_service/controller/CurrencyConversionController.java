@@ -1,21 +1,23 @@
 package com.in28minutes.microservices.currency_conversion_service.controller;
 
-import com.in28minutes.microservices.currency_conversion_service.bean.CurrencyConversionEntity;
+import com.in28minutes.microservices.currency_conversion_service.bean.CurrencyConversion;
 import com.in28minutes.microservices.currency_conversion_service.proxy.CurrencyExchangeProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("currency-conversion")
 public class CurrencyConversionController {
+
+    private Logger logger = LoggerFactory.getLogger(CurrencyConversionController.class);
 
     @Autowired
     private CurrencyExchangeProxy currencyExchangeProxy;
@@ -24,19 +26,26 @@ public class CurrencyConversionController {
     private Environment environment;
 
     @GetMapping("/from/{fromCurrency}/to/{toCurrency}/quantity/{quantity}")
-    public CurrencyConversionEntity calculateCurrencyConversion(
+    public CurrencyConversion calculateCurrencyConversion(
             @PathVariable String fromCurrency,
             @PathVariable String toCurrency,
             @PathVariable BigDecimal quantity) {
-        CurrencyConversionEntity conversionEntityResponse =
+
+        // KUBERNETES-CHANGE
+        logger.info("CurrencyConversionController Called with {} to {} with {}",
+                fromCurrency, toCurrency, quantity
+        );
+
+
+        CurrencyConversion currencyConversion =
                 currencyExchangeProxy.getCurrencyExchange(fromCurrency, toCurrency);
 
         // Extra Field To Prepare ConversionEntityResponse
-        conversionEntityResponse.setQuantity(quantity);
-        conversionEntityResponse.setTotalCalculatedAmount(
-                quantity.multiply(conversionEntityResponse.getConversionMultiple())
+        currencyConversion.setQuantity(quantity);
+        currencyConversion.setTotalCalculatedAmount(
+                quantity.multiply(currencyConversion.getConversionMultiple())
         );
 
-        return conversionEntityResponse;
+        return currencyConversion;
     }
 }

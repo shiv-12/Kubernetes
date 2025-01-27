@@ -30,19 +30,18 @@ public class CurrencyExchangeController {
 
         logger.info("getCurrencyExchange called with {} to {}", currency_from, currency_to);
 
-
         CurrencyExchange currencyExchange = new CurrencyExchange();
         currencyExchange.setId(1L);
         currencyExchange.setFrom("USD");
         currencyExchange.setTo("INR");
         currencyExchange.setConversionMultiple(BigDecimal.valueOf(65));
 
+        // Setting The Environment Details
+        String instancePort = environment.getProperty("local.server.port");     // Server PORT
+        String host = environment.getProperty("HOSTNAME");                      // POD Information
+        String version = "v11";                                                 // Same as POM.XML
+        currencyExchange.setEnvironment(instancePort + " " + host + " " + version);
 
-        // Extracting the port of the instance which responding,
-        // Multiple instances of CurrencyExchange may be running
-        String instancePort = environment.getProperty("local.server.port");
-
-        currencyExchange.setEnvironment("Response from : " + instancePort);
         return currencyExchange;
     }
 }

@@ -3,7 +3,7 @@ package com.in28minutes.microservices.currency_conversion_service.bean;
 
 import java.math.BigDecimal;
 
-public class CurrencyConversionEntity {
+public class CurrencyConversion {
 
     // Below 5 data members are exactly matches with CurrencyExchangeResponse
     private Long id;
@@ -16,10 +16,10 @@ public class CurrencyConversionEntity {
     private BigDecimal quantity;
     private BigDecimal totalCalculatedAmount;
 
-    public CurrencyConversionEntity() {
+    public CurrencyConversion() {
     }
 
-    public CurrencyConversionEntity(Long id, String from, String to, BigDecimal quantity, BigDecimal conversionMultiple, BigDecimal totalCalculatedAmount, String environment) {
+    public CurrencyConversion(Long id, String from, String to, BigDecimal quantity, BigDecimal conversionMultiple, BigDecimal totalCalculatedAmount, String environment) {
         this.id = id;
         this.from = from;
         this.to = to;

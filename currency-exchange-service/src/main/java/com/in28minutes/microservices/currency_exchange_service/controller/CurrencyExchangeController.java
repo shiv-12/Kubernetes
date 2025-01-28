@@ -39,7 +39,7 @@ public class CurrencyExchangeController {
         // Setting The Environment Details
         String instancePort = environment.getProperty("local.server.port");     // Server PORT
         String host = environment.getProperty("HOSTNAME");                      // POD Information
-        String version = "v11";                                                 // Same as POM.XML
+        String version = "v12";                                                 // Same as POM.XML
         currencyExchange.setEnvironment(instancePort + " " + host + " " + version);
 
         return currencyExchange;

@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 // Adding application.name and base url of CurrencyExchangeService
 
-@FeignClient(name = "currency-exchange", url = "${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000")
+//@FeignClient(name = "currency-exchange", url = "${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000")
+@FeignClient(name = "currency-exchange", url = "${CURRENCY_EXCHANGE_URI:http://localhost}:8000")
 public interface CurrencyExchangeProxy {
     @GetMapping("/currency-exchange/from/{currency_from}/to/{currency_to}")
     public CurrencyConversion getCurrencyExchange(

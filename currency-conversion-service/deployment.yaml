@@ -1,8 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "1"
   labels:
     app: currency-conversion
   name: currency-conversion
@@ -23,10 +21,12 @@ spec:
         app: currency-conversion
     spec:
       containers:
-        - image: shivamd18/mmv3-currency-conversion-service:0.0.11-SNAPSHOT
+        - image: shivamd18/mmv3-currency-conversion-service:0.0.12-SNAPSHOT
           imagePullPolicy: IfNotPresent
           name: mmv3-currency-conversion-service
-      restartPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: currency-conversion
 ---
 apiVersion: v1
 kind: Service
@@ -44,3 +44,11 @@ spec:
     app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: currency-conversion
+  namespace: default
+data:
+  CURRENCY_EXCHANGE_URI: http://currency-exchange
